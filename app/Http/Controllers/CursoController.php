@@ -17,7 +17,10 @@ class CursoController
      */
     public function index()
     {
-        //
+        $clientes = Cliente::orderBy('id', 'desc')->get();
+        $pqrsds = Pqrsd::orderBy('id', 'desc')->get();
+        
+        return view('cuestionario', compact('clientes', 'pqrsds'));
     }
 
     /**
@@ -25,7 +28,7 @@ class CursoController
      */
     public function create()
     {
-        return view('cuestionario');
+        return view('formulario');
     }
 
     /**
@@ -59,8 +62,10 @@ class CursoController
         $pqrsd->estado = $request->estado;
         $pqrsd->save();
 
+        
+
         // Redireccionar a alguna vista o ruta
-        return Redirect::route('formulario')->with('success', 'La respuesta ha sido enviada exitosamente.');
+        return redirect()->route('formulario.index');
     }
 
     /**
@@ -84,7 +89,32 @@ class CursoController
      */
     public function update(Request $request, c $c)
     {
-        //
+        // Crear un nuevo cliente
+        $cliente = new Cliente();
+        $cliente->primerNombre = $request->primerNombre;
+        $cliente->segundoNombre = $request->segundoNombre;
+        $cliente->primerApellido = $request->primerApellido;
+        $cliente->segundoApellido = $request->segundoApellido;
+        $cliente->tipoDocumento = $request->tipoDocumento;
+        $cliente->numeroIdentificacion = $request->numeroIdentificacion;
+        $cliente->fechaNacimiento = $request->fechaNacimiento;
+        $cliente->genero = $request->genero;
+        $cliente->direccion = $request->direccion;
+        $cliente->save();
+
+        // Crear un nuevo Pqrsd
+        $pqrsd = new Pqrsd();
+        $pqrsd->idCliente = $cliente->id;
+        $pqrsd->correoElectronico = $request->correoElectronico;
+        $pqrsd->esAnonima = $request->esAnonima;
+        $pqrsd->tipoPqrsd = $request->tipoPqrsd;
+        $pqrsd->tipoPersona = $request->tipoPersona;
+        $pqrsd->descripcionSolicitud = $request->descripcionSolicitud;
+        $pqrsd->urlPdf = $request->urlPdf;
+        $pqrsd->estado = $request->estado;
+        $pqrsd->save();
+        
+        return redirect()->route('');
     }
 
     /**

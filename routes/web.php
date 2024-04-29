@@ -7,6 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/cuestionario', [CursoController::class, 'create']);
-Route::get('/formulario', [CursoController::class, 'create'])->name('formulario');
-Route::post('/cuestionario', [CursoController::class, 'store'])->name('formulario.store');
+Route::get('/formulario', [CursoController::class, 'create']);
+Route::get('/formulario/create', [CursoController::class, 'index'])->name('formulario.index');
+Route::post('/formulario/store', [CursoController::class, 'store'])->name('formulario.store');
